@@ -13,14 +13,15 @@ public:
     // of these for known things.
     enum class Token {
         tok_eof = -1,
+        tok_delimiter = -2,     // TODO: add to gettok()
 
         // commands
-        tok_function = -2,
-        //tok_extern = -3,
+        tok_function = -3,
+        //tok_extern = -4,
 
         // primary
-        tok_identifier = -4,
-        tok_number = -5,
+        tok_identifier = -5,
+        tok_number = -6,
     };
 // ==================================================================================
     int gettok();
