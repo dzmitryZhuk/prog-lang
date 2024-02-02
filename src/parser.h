@@ -1,5 +1,4 @@
-#ifndef _COMPILLER_PARSER_H_
-#define _COMPILLER_PARSER_H_
+#pragma once
 
 #include <map>
 #include <string>
@@ -24,5 +23,3 @@ public:
     return TokPrec;
     }
 };
-
-#endif

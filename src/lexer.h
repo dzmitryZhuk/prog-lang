@@ -1,5 +1,4 @@
-#ifndef _COMPILLER_LEXER_H_
-#define _COMPILLER_LEXER_H_
+#pragma once
 
 #include <string>
 
@@ -31,5 +30,3 @@ public:
 private:
     virtual int f_getchar();
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef _COMPILLER_AST_H_
-#define _COMPILLER_AST_H_
+#pragma once
 
 #include <string>
 #include <vector>
@@ -67,5 +66,3 @@ public:
   ASTFunction(std::unique_ptr<ASTPrototype> proto, std::unique_ptr<ASTExpr> body)
     : m_proto(std::move(proto)), m_body(std::move(body)) {}
 };
-
-#endif
