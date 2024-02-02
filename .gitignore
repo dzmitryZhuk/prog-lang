@@ -1,2 +1,6 @@
 .vscode/
-
+CMakeFiles/
+*.vcxproj
+*.vcxproj.filters
+*.cmake
+*.sln
