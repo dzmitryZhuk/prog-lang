@@ -1,0 +1,351 @@
+///////////////////////////////////////////////////
+//////////////////// REQUIRED /////////////////////
+///////////////////////////////////////////////////
+
+/////////////////////////////////////////////////// Declaring each variable on a new line
+
+QString text, data = "data"; // bad
+
+// good
+QString text;
+QString data = "data";
+
+/////////////////////////////////////////////////// Place a declaration closer to use
+
+QString retval; // bad
+QString text;
+for (...)
+{
+    if (...)
+    {
+        text = "...";
+    }
+}
+QString retval; // good
+retval = "Result: " + text;
+return retval;
+
+/////////////////////////////////////////////////// Spaces between binary operators and operands
+
+int sum = a * b + c / d;
+
+/////////////////////////////////////////////////// Punctuation character before the field name in the initializer list (space between them)
+
+A::A()
+    : a_{10}
+    , b_{20}
+{
+    ...
+}
+
+/////////////////////////////////////////////////// Camel case instead Snake case
+
+int authorizedUserCount = 100; // good
+int authorized_user_count = 100; // bad
+
+/////////////////////////////////////////////////// Class field instead of global variable
+
+int count; // bad
+class A
+{
+    int count_; // good
+};
+
+/////////////////////////////////////////////////// Curly braces even for one line
+
+if (count >= 0) // bad
+    i++;
+if (count >= 0) // good
+{
+    i++;
+}
+
+/////////////////////////////////////////////////// Brief-comments
+
+/*!
+ * \brief UniversalGraphicsItem - constructor method for creating an universal
+ * graphics item for flow scene
+ * \param id - unique identificator of universal graphics item
+ * \param impl - item implementation (data)
+ * \param scene - the scene, which will contain this item
+ */
+UniversalGraphicsItem(QUuid id,
+                      UniversalGraphicsItemImpl* impl,
+                      qtnodes::FlowScene* scene);
+
+/////////////////////////////////////////////////// Reference variable as function parameter
+
+void setText(QString text); // bad
+{
+    text_ = text;
+}
+void setText(const QString &text); // good
+{
+    text_ = text;
+}
+
+/////////////////////////////////////////////////// The abbreviation is written in lowercase
+
+int XMLTagCount; // bad
+int xmlTagCount // good
+QString targetXmlDocPath; // good
+
+/////////////////////////////////////////////////// The class field ends with an underscore
+
+class A
+{
+    int count; // bad
+    int count_; // good
+}
+
+/////////////////////////////////////////////////// Short names are allowed only for local variables
+
+class TemporaryContainer // not TmpContainer
+{
+    int currentPosition_; // not curPos_
+
+    void setCurrentPosition(int position) // not setCurPos(int pos)
+    {
+        int curPos = position++; // good
+        currentPosition_ = curPos;
+    }
+}
+
+/////////////////////////////////////////////////// Getter does not need the "get" word
+
+class A
+{
+    public:
+        int getCount() const; // bad
+        int count() const; // good
+    private:
+        int count_;
+}
+
+/////////////////////////////////////////////////// GUI elements require appropriate suffixes
+
+class ScaleDialog : QDialog
+{
+    QLabel *descriptionLabel_;
+    QLineEdit *scaleFactorLineEdit_;
+    QPushButton *okButton_;
+}
+
+/////////////////////////////////////////////////// Use plural instead of list
+
+QList<QString> recordList; // bad
+QList<QString> records; // good
+
+/////////////////////////////////////////////////// For boolean variables, use the prefixes "is", "can", "need", "has"
+
+bool isActive = true; // good
+bool active = true; // bad
+bool canDisplay = true; // good
+bool needUpdate = true; // good
+bool hasChildren = true; // good
+
+/////////////////////////////////////////////////// QString does not need to be initialized to an empty value
+
+QString str = ""; // bad
+QString str{}; // bad
+QString str; // good
+
+/////////////////////////////////////////////////// Empty braces are not needed to call an empty constructor
+
+A a{}; // bad
+A *a = new A{}; // bad
+A a; // good
+A *a = new A; // good
+
+/////////////////////////////////////////////////// Use only curly braces when calling a constructor
+
+auto a = new A{1, 2, 3};
+
+/////////////////////////////////////////////////// Symmetric names
+
+get-set
+add-remove
+create-destory
+start-stop
+insert-delete
+add-delete // bad
+
+/////////////////////////////////////////////////// Pointer names must not contain "p" or "ptr"
+
+auto pButton = new QPushButton; // bad
+auto buttonPtr = new QPushButton; // bad
+auto button = new QPushButton; // good
+
+/////////////////////////////////////////////////// Negation in boolean variables is not allowed
+
+bool isNotAccepted; // bad
+bool isAccepted; // good
+
+/////////////////////////////////////////////////// Singular enum name
+
+enum Colors // bad
+{
+    Red,
+    Green,
+    Blue
+};
+enum Color // good
+{
+    Red,
+    Green,
+    Blue
+};
+
+/////////////////////////////////////////////////// File extensions for C++ sources
+
+A.hpp // bad
+A.h // good
+A.c // bad
+A.c++ // bad
+A.cpp // good
+
+/////////////////////////////////////////////////// Field and method definitions must occur in a cpp-file
+
+*.h:
+class A
+{
+    public:
+        A()
+        {
+            ... // bad
+        }
+        A(); // good
+    private:
+        int count_ = 10; // bad
+        int count_; // good
+}
+
+*.cpp:
+A::A()
+    : count_{10} // good
+{
+    ... // good
+}
+
+/////////////////////////////////////////////////// A class field can only be public if the class has no behavior and just stores data
+
+class A
+{
+    public:
+        void setFirst(int value);
+        void setSecond(int value);
+        int computeSum() const;
+    private:
+        int first_;
+        int second_;
+};
+class A
+{
+    public:
+        int first_;
+        int second_;
+}
+
+/////////////////////////////////////////////////// Symbols & and * glued to the name of variable
+
+QString& str; //bad
+QPushButton* button; // bad
+
+QString &str; // good
+QPushButton *button; // good
+
+/////////////////////////////////////////////////// The condition must not contain executable expressions
+
+if (auto item = graphicsItems().first()) // bad
+{
+    ...
+}
+
+auto item = graphicsItems().first(); // good
+if (item)
+{
+    ...
+}
+
+/////////////////////////////////////////////////// Magic numbers
+
+int containerSize = count_ + 10; // bad
+
+const int extendingCount = 10; // good
+int containerSize = count_ + extendingCount;
+
+/////////////////////////////////////////////////// A space is required after "while", "for", "if", "switch"
+
+while(true) // bad
+while (true) // good
+
+/////////////////////////////////////////////////// A space is required after a semicolon in the "for"
+
+for (auto i = 0;i < count;i++) // bad
+for (auto i = 0; i < count; i++) // good
+
+/////////////////////////////////////////////////// A space is required after commas
+
+computeSum(10,20); // bad
+computeSum(10, 20); // good
+
+/////////////////////////////////////////////////// There is no space between a method name and a brace
+
+computeSum (10, 20); // bad
+computeSum(10, 20); // good
+
+/////////////////////////////////////////////////// To comment code, use only //
+
+/*if (count == 0) // bad
+{
+    return false;
+}*/
+
+//if (count == 0) // good
+//{
+//    return false;
+//}
+
+
+/////////////////////////////////////////////////// If the function parameters extend the method too much, you need to wrap each parameter on a new line
+
+UniversalGraphicsItem::UniversalGraphicsItem(QUuid id, UniversalGraphicsItemImpl* impl, qtnodes::FlowScene* innerScene) // bad
+
+UniversalGraphicsItem::UniversalGraphicsItem(QUuid id, UniversalGraphicsItemImpl* impl,
+                                             qtnodes::FlowScene* innerScene) // bad
+
+UniversalGraphicsItem::UniversalGraphicsItem(QUuid id,
+                                             UniversalGraphicsItemImpl* impl,
+                                             qtnodes::FlowScene* innerScene) // good
+
+/////////////////////////////////////////////////// Preprocessor: order
+
+#pragma once
+
+#include ".h"
+#include ".h"
+
+#include <>
+#include <>
+
+/////////////////////////////////////////////////// Theses
+
+Blank line between function definitions
+#pragma once instead #ifndef CLASSNAME_H
+Type name begins with a capital letter
+Names of variables, methods, and namespaces begin with a lowercase letter
+Don't use structs, only classes
+Each pointer must be checked on nullptr (except for a pointer which get after the creation of the object in the current function)
+The class must contain "public", "protected" and "private" blocks sequentially. Each of these blocks first contains method declarations, and after a field declarations
+Switch-case construction must contain curly braces
+
+///////////////////////////////////////////////////
+////////////////// RECOMMENDED ////////////////////
+///////////////////////////////////////////////////
+
+Curly brace on new line
+For fewer nestings, use an "if" writeback condition (if possible)
+Use the "auto" keyword (instead of long class names) when getting a pointer
+Avoid file names, function names, and variable names longer than 30 characters
+The length of the function body is not more than 50 lines
+String length no more than 80 characters
