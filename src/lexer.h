@@ -4,29 +4,28 @@
 
 class Lexer
 {
-public:
-    std::string IdentifierStr; // Filled in if tok_identifier
-    double NumVal;             // Filled in if tok_number
+    public:    
+        int gettok();
+        Lexer();
+        virtual ~Lexer() = default;
 
-    // The Lexer returns tokens [0-255] if it is an unknown character, otherwise one
-    // of these for known things.
-    enum class Token {
-        tok_eof = -1,
-        tok_delimiter = -2,     // TODO: add to gettok()
+        /*!
+        * \brief The Lexer returns tokens [0-255] if it is an unknown character,
+        * otherwise one of these for known things.
+        */
+        enum class Token
+        {
+            eof = -1,
+            delimiter = -2,     // TODO: add this to gettok()
+            function = -3,
+            identifier = -4,
+            number = -5,
+        };
+        std::string identifierAsString_;
+        double numberValue_;
+        std::string functionIdentifier_;
+        std::string commentsIdentifier_;
 
-        // commands
-        tok_function = -3,
-        //tok_extern = -4,
-
-        // primary
-        tok_identifier = -5,
-        tok_number = -6,
-    };
-// ==================================================================================
-    int gettok();
-    Lexer();
-    virtual ~Lexer() = default;
-
-private:
-    virtual int f_getchar();
+    private:
+        virtual int getchar();
 };

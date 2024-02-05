@@ -1,60 +1,76 @@
+#include "lexer.h"
+
 #include <type_traits>
 #include <iostream>
 
-#include "lexer.h"
+Lexer::Lexer()
+    : functionIdentifier_("function")
+    , commentsIdentifier_("#")
+{
+}
 
 int Lexer::gettok()
 {
-    static int LastChar = ' ';
+    static int lastChar = ' ';
 
     // Skip any whitespace.
-    while (isspace(LastChar))
-        LastChar = std::move(f_getchar());
-
-    if (isalpha(LastChar)) { // identifier: [a-zA-Z][a-zA-Z0-9]*
-        IdentifierStr = LastChar;
-        while (isalnum((LastChar = std::move(f_getchar()))))
-            IdentifierStr += LastChar;
-
-        if (IdentifierStr == "function")
-            return static_cast<int>(Token::tok_function);
-        // if (IdentifierStr == "extern")
-        // return static_cast<int>(Token::tok_extern);
-        return static_cast<int>(Token::tok_identifier);
+    while(isspace(lastChar))
+    {
+        lastChar = std::move(getchar());
     }
 
-    if (isdigit(LastChar) || LastChar == '.') { // Number: [0-9.]+
-        std::string NumStr;
-        do {
-            NumStr += LastChar;
-            LastChar = std::move(f_getchar());
-        } while (isdigit(LastChar) || LastChar == '.');
-
-        NumVal = strtod(NumStr.c_str(), nullptr);
-        return static_cast<int>(Token::tok_number);
-    }
-
-    if (LastChar == '/') {
-        // Comment until end of line.
+    if(isalpha(lastChar))  // [a-zA-Z]
+    {
         do
-            LastChar = std::move(f_getchar());
-        while (LastChar != EOF && LastChar != '\n' && LastChar != '\r');
+        {
+            identifierAsString_ += lastChar;
+            lastChar = std::move(getchar());
+        } while(isalnum(lastChar));    // [a-zA-Z0-9]
 
-        if (LastChar != EOF)
-            return gettok();
+        if(identifierAsString_ == functionIdentifier_)
+        {
+            return static_cast<int>(Token::function);
+        }
+
+        if(identifierAsString_ == commentsIdentifier_)
+        {
+            // Comment until end of line.
+            do
+                lastChar = std::move(getchar());
+            while(lastChar != EOF && lastChar != '\n' && lastChar != '\r');
+
+            if (lastChar != EOF)
+                return gettok();
+        }
+        
+        return static_cast<int>(Token::identifier);
+    }
+
+    if(isdigit(lastChar) || lastChar == '.')    // [0-9.]+
+    {
+        std::string numStr;
+        do
+        {
+            numStr += lastChar;
+            lastChar = std::move(getchar());
+        } while(isdigit(lastChar) || lastChar == '.');
+
+        numberValue_ = strtod(numStr.c_str(), nullptr);
+        return static_cast<int>(Token::number);
     }
 
     // Check for end of file.  Don't eat the EOF.
-    if (LastChar == EOF)
-        return static_cast<int>(Token::tok_eof);
+    if(lastChar == EOF)
+    {
+        return static_cast<int>(Token::eof);
+    }
 
-    // Otherwise, just return the character as its ascii value.
-    int ThisChar = LastChar;
-    LastChar = std::move(f_getchar());
-    return ThisChar;
+    int unknownToken = lastChar;
+    lastChar = std::move(getchar());
+    return unknownToken;
 }
 
-int Lexer::f_getchar()
+int Lexer::getchar()
 {
     return std::cin.get();
 }
