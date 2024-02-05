@@ -20,7 +20,7 @@ class ASTExpressionNumber : public ASTExpression {
 };
 
 // Expression class for referencing a variable, like "val".
-class ASTExpressionVariable : ASTExpression {
+class ASTExpressionVariable : public ASTExpression {
     public:
         ASTExpressionVariable(const std::string& name);
     private:
