@@ -6,8 +6,10 @@ class Lexer
 {
     public:    
         int gettok();
-        Lexer();
+        explicit Lexer(const std::string &source);
         virtual ~Lexer() = default;
+        const std::string identifier() const;
+        const double number() const;
 
         /*!
         * \brief The Lexer returns tokens [0-255] if it is an unknown character,
@@ -16,16 +18,21 @@ class Lexer
         enum class Token
         {
             eof = -1,
-            delimiter = -2,     // TODO: add this to gettok()
+            delimiter = -2,     // TODO: add this to gettok() ';'
             function = -3,
-            identifier = -4,
-            number = -5,
+            returning = -4,
+            identifier = -5,
+            number = -6,
         };
-        std::string identifierAsString_;
-        double numberValue_;
         std::string functionIdentifier_;
         std::string commentsIdentifier_;
+        std::string returningIdentifier_;
 
     private:
         virtual int getchar();
+
+        const std::string source_;
+        int index;
+        std::string identifierAsString_;
+        double numberValue_;
 };

@@ -3,10 +3,23 @@
 #include <type_traits>
 #include <iostream>
 
-Lexer::Lexer()
-    : functionIdentifier_("function")
+Lexer::Lexer(const std::string &source)
+    : source_(source)
+    , index(0)
+    , functionIdentifier_("func")
     , commentsIdentifier_("#")
+    , returningIdentifier_("ret")
 {
+}
+
+const std::string Lexer::identifier() const
+{
+  return identifierAsString_;
+}
+
+const double Lexer::number() const
+{
+  return numberValue_;
 }
 
 int Lexer::gettok()
@@ -29,11 +42,19 @@ int Lexer::gettok()
 
         if(identifierAsString_ == functionIdentifier_)
         {
+            identifierAsString_.clear();
             return static_cast<int>(Token::function);
+        }
+
+        if(identifierAsString_ == returningIdentifier_)
+        {
+            identifierAsString_.clear();
+            return static_cast<int>(Token::returning);
         }
 
         if(identifierAsString_ == commentsIdentifier_)
         {
+            identifierAsString_.clear();
             // Comment until end of line.
             do
                 lastChar = std::move(getchar());
@@ -59,7 +80,6 @@ int Lexer::gettok()
         return static_cast<int>(Token::number);
     }
 
-    // Check for end of file.  Don't eat the EOF.
     if(lastChar == EOF)
     {
         return static_cast<int>(Token::eof);
@@ -72,5 +92,9 @@ int Lexer::gettok()
 
 int Lexer::getchar()
 {
-    return std::cin.get();
+    if(index == source_.size())
+    {
+        return EOF;
+    }
+    return source_.at(index++);
 }
