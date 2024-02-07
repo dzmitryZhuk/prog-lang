@@ -1,14 +1,18 @@
 #pragma once
 
+#include "lexer.h"
+
 #include <string>
 #include <vector>
 #include <memory>
 
 class ASTNode
 {
-    // TODO: add type of node like number, string, etc.
     public:
         virtual ~ASTNode() = default;
+
+    protected:
+        Lexer::Token type_;
 };
 
 // AST expression
@@ -24,7 +28,7 @@ class ASTExpressionNumber : public ASTExpression
     public:
         ASTExpressionNumber(const double &value);
         const double value() const;
-    private:
+    protected:
         double value_;
 };
 
@@ -34,12 +38,13 @@ class ASTExpressionVariable : public ASTExpression
     public:
         ASTExpressionVariable(const std::string& name);
         const std::string name() const;
-    private:
+    protected:
         std::string name_;
 };
 
 // // Expression class for a binary operator.
-// class ASTExpressionBinary : public ASTExpression {
+// class ASTExpressionBinary : public ASTExpression
+// {
 //     public:
 //         ASTExpressionBinary(const char &binaryOperator,
 //                           std::unique_ptr<ASTExpression> left,
@@ -50,7 +55,8 @@ class ASTExpressionVariable : public ASTExpression
 // };
 
 // // Expression class for function calls
-// class ASTExpressionCall : public ASTExpression {
+// class ASTExpressionCall : public ASTExpression
+// {
 //     public:
 //         ASTExpressionCall(const std::string &callee,
 //                           std::vector<std::unique_ptr<ASTExpression>> args);
@@ -60,7 +66,8 @@ class ASTExpressionVariable : public ASTExpression
 // };
 
 // // This class represents the "prototype" for a function, which captures its name, and its argument names
-// class ASTPrototype {
+// class ASTPrototype : public ASTNode
+// {
 //     public:
 //         ASTPrototype(const std::string &name, const std::vector<std::string> &args);
 //         const std::string &name() const;
@@ -70,7 +77,8 @@ class ASTExpressionVariable : public ASTExpression
 // };
 
 // // This class represents a function definition itself
-// class ASTFunction {
+// class ASTFunction : public ASTNode
+// {
 //     public:
 //         ASTFunction(std::unique_ptr<ASTPrototype> proto, std::unique_ptr<ASTExpression> body);
 //     private:
