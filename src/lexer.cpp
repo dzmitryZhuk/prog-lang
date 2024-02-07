@@ -52,24 +52,6 @@ int Lexer::gettok()
             identifierAsString_.clear();
             return static_cast<int>(Token::returning);
         }
-
-        if(identifierAsString_ == assignmentIdentifier_)
-        {
-            identifierAsString_.clear();
-            return static_cast<int>(Token::assignment);
-        }
-
-        if(identifierAsString_ == commentsIdentifier_)
-        {
-            identifierAsString_.clear();
-            // Comment until end of line.
-            do
-                lastChar = std::move(getchar());
-            while(lastChar != EOF && lastChar != '\n' && lastChar != '\r');
-
-            if (lastChar != EOF)
-                return gettok();
-        }
         
         return static_cast<int>(Token::identifier);
     }
@@ -85,6 +67,31 @@ int Lexer::gettok()
 
         numberValue_ = strtod(numStr.c_str(), nullptr);
         return static_cast<int>(Token::number);
+    }
+
+    if(ispunct(lastChar))   // !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+    {
+        identifierAsString_ = lastChar;
+
+        if(identifierAsString_ == commentsIdentifier_)
+        {
+            identifierAsString_.clear();
+            // Comment until end of line.
+            do
+            {
+                    lastChar = std::move(getchar());
+            }
+            while(lastChar != EOF && lastChar != '\n' && lastChar != '\r');
+
+            if(lastChar != EOF)
+                return gettok();
+        }
+
+        if(identifierAsString_ == assignmentIdentifier_)
+        {
+            identifierAsString_.clear();
+            return static_cast<int>(Token::assignment);
+        }
     }
 
     if(lastChar == EOF)
