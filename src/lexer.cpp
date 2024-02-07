@@ -28,26 +28,26 @@ int Lexer::gettok()
     static int lastChar = ' ';
 
     // Skip any whitespace.
-    while(isspace(lastChar))
+    while (isspace(lastChar))
     {
         lastChar = std::move(getchar());
     }
 
-    if(isalpha(lastChar))  // [a-zA-Z]
+    if (isalpha(lastChar))  // [a-zA-Z]
     {
         do
         {
             identifierAsString_ += lastChar;
             lastChar = std::move(getchar());
-        } while(isalnum(lastChar));    // [a-zA-Z0-9]
+        } while (isalnum(lastChar));    // [a-zA-Z0-9]
 
-        if(identifierAsString_ == functionIdentifier_)
+        if (identifierAsString_ == functionIdentifier_)
         {
             identifierAsString_.clear();
             return static_cast<int>(Token::function);
         }
 
-        if(identifierAsString_ == returningIdentifier_)
+        if (identifierAsString_ == returningIdentifier_)
         {
             identifierAsString_.clear();
             return static_cast<int>(Token::returning);
@@ -56,24 +56,24 @@ int Lexer::gettok()
         return static_cast<int>(Token::identifier);
     }
 
-    if(isdigit(lastChar) || lastChar == '.')    // [0-9.]+
+    if (isdigit(lastChar) || lastChar == '.')    // [0-9.]+
     {
         std::string numStr;
         do
         {
             numStr += lastChar;
             lastChar = std::move(getchar());
-        } while(isdigit(lastChar) || lastChar == '.');
+        } while (isdigit(lastChar) || lastChar == '.');
 
         numberValue_ = strtod(numStr.c_str(), nullptr);
         return static_cast<int>(Token::number);
     }
 
-    if(ispunct(lastChar))   // !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+    if (ispunct(lastChar))   // !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
     {
         identifierAsString_ = lastChar;
 
-        if(identifierAsString_ == commentsIdentifier_)
+        if (identifierAsString_ == commentsIdentifier_)
         {
             identifierAsString_.clear();
             // Comment until end of line.
@@ -81,20 +81,22 @@ int Lexer::gettok()
             {
                     lastChar = std::move(getchar());
             }
-            while(lastChar != EOF && lastChar != '\n' && lastChar != '\r');
+            while (lastChar != EOF && lastChar != '\n' && lastChar != '\r');
 
-            if(lastChar != EOF)
+            if (lastChar != EOF)
+            {
                 return gettok();
+            }
         }
 
-        if(identifierAsString_ == assignmentIdentifier_)
+        if (identifierAsString_ == assignmentIdentifier_)
         {
             identifierAsString_.clear();
             return static_cast<int>(Token::assignment);
         }
     }
 
-    if(lastChar == EOF)
+    if (lastChar == EOF)
     {
         return static_cast<int>(Token::eof);
     }
@@ -106,7 +108,7 @@ int Lexer::gettok()
 
 int Lexer::getchar()
 {
-    if(index == source_.size())
+    if (index == source_.size())
     {
         return EOF;
     }
