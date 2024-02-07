@@ -71,15 +71,23 @@ int Lexer::gettok()
 
     if (ispunct(lastChar))   // !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
     {
-        identifierAsString_ = lastChar;
+        do
+        {
+            identifierAsString_ += lastChar;
+            lastChar = std::move(getchar());
+        } while (ispunct(lastChar));
 
-        if (identifierAsString_ == commentsIdentifier_)
+        if (identifierAsString_ == commentsIdentifier_) // ? previous module capture several punctuation characters in a row, so
+                                                        //   here could be situation like this "##aaaaa"
+                                                        //   this will be commet and should be skipped
+                                                        //   but its will not working in this code
+                                                        // TODO: fix this bug
         {
             identifierAsString_.clear();
             // Comment until end of line.
             do
             {
-                    lastChar = std::move(getchar());
+                lastChar = std::move(getchar());
             }
             while (lastChar != EOF && lastChar != '\n' && lastChar != '\r');
 
