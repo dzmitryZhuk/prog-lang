@@ -23,12 +23,12 @@ class Lexer
             returning = -4,
             identifier = -5,
             number = -6,
-            equals = -7,
+            assignment = -7,
         };
         std::string functionIdentifier_;
         std::string commentsIdentifier_;
         std::string returningIdentifier_;
-        std::string equalsIdentifier_;
+        std::string assignmentIdentifier_;
 
     private:
         virtual int getchar();

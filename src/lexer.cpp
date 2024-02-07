@@ -9,7 +9,7 @@ Lexer::Lexer(const std::string &source)
     , functionIdentifier_("func")
     , commentsIdentifier_("#")
     , returningIdentifier_("ret")
-    , equalsIdentifier_("=")
+    , assignmentIdentifier_("=")
 {
 }
 
@@ -53,10 +53,10 @@ int Lexer::gettok()
             return static_cast<int>(Token::returning);
         }
 
-        if(identifierAsString_ == equalsIdentifier_)
+        if(identifierAsString_ == assignmentIdentifier_)
         {
             identifierAsString_.clear();
-            return static_cast<int>(Token::equals);
+            return static_cast<int>(Token::assignment);
         }
 
         if(identifierAsString_ == commentsIdentifier_)
