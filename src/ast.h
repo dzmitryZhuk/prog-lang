@@ -5,14 +5,18 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <optional>
 
 class ASTNode
 {
     public:
+        ASTNode();
         virtual ~ASTNode() = default;
 
     protected:
-        Lexer::Token type_;
+        ASTNode *left_;
+        ASTNode *right_;
+        std::optional<Lexer::Token> type_;
 };
 
 // AST expression
@@ -40,6 +44,12 @@ class ASTExpressionVariable : public ASTExpression
         const std::string name() const;
     protected:
         std::string name_;
+};
+
+class ASTExpressionAssignment : public ASTExpression
+{
+    public:
+        ASTExpressionAssignment(const std::string& variableName,  ASTExpression  *whatAssign);
 };
 
 // // Expression class for a binary operator.

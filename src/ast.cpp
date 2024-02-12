@@ -1,8 +1,15 @@
 #include "ast.h"
 
+ASTNode::ASTNode()
+    : left_(nullptr)
+    , right_(nullptr)
+{
+}
+
 ASTExpressionNumber::ASTExpressionNumber(const double& value)
     : value_(value)
 {
+    type_ = Lexer::Token::number;
 }
 
 const double ASTExpressionNumber::value() const
@@ -13,6 +20,7 @@ const double ASTExpressionNumber::value() const
 ASTExpressionVariable::ASTExpressionVariable(const std::string &name)
     : name_(name)
 {
+    type_ = Lexer::Token::identifier;
 }
 
 const std::string ASTExpressionVariable::name() const
