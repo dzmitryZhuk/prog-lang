@@ -15,10 +15,10 @@ class Lexer
         * \brief The Lexer returns tokens [0-255] if it is an unknown character,
         * otherwise one of these for known things.
         */
-        enum class Token
+        enum class Token : int16_t
         {
             eof = -1,
-            delimiter = -2,     // TODO: add this to gettok() ';'
+            delimiter = -2,
             function = -3,
             returning = -4,
             identifier = -5,
@@ -29,6 +29,7 @@ class Lexer
         std::string commentsIdentifier_;
         std::string returningIdentifier_;
         std::string assignmentIdentifier_;
+        std::string delimitertIdentifier_;
 
     private:
         virtual int getchar();

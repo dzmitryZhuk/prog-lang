@@ -10,6 +10,7 @@ Lexer::Lexer(const std::string &source)
     , commentsIdentifier_("#")
     , returningIdentifier_("ret")
     , assignmentIdentifier_("=")
+    , delimitertIdentifier_(";")
 {
 }
 
