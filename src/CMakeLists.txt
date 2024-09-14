@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.0...3.27)
 
-# project(compiller)
+project(compiller
+        VERSION 0.1)
 
 file(GLOB SOURCES "*.cpp")
 file(GLOB HEADERS "*.h")
