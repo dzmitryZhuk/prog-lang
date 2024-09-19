@@ -7,7 +7,7 @@ Parser::Parser(const std::filesystem::path &path)
 {
   auto fileSize = std::filesystem::file_size(path);
   std::string fileContent;
-  fileContent.resize(fileSize);
+  fileContent.reserve(fileSize);
   std::ifstream stream{path};
   stream.read(fileContent.data(), fileSize);
   stream.close();
