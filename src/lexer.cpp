@@ -14,6 +14,32 @@ Lexer::Lexer(const std::string &source)
 {
 }
 
+std::vector<Lexer::TokenTuple> Lexer::tokenize()
+{
+    std::vector<TokenTuple> res;
+    Token token;
+    TokenTuple curTuple;
+
+    while ((token = static_cast<Token>(gettok())) != Token::eof)
+    {
+        switch (token)
+        {
+        case Token::identifier:
+            curTuple = {token, identifier()};
+            break;
+        case Token::number:
+            curTuple = {token, number()};
+            break;
+        default:
+            curTuple = {token, std::monostate()};
+            break;
+        }
+        res.push_back(curTuple);
+    }
+
+    return res;
+}
+
 const std::string Lexer::identifier() const
 {
   return identifierAsString_;
@@ -26,7 +52,7 @@ const double Lexer::number() const
 
 int Lexer::gettok()
 {
-    static int lastChar = ' ';
+    static char lastChar = ' '; // char -> int
 
     // Skip any whitespace.
     while (isspace(lastChar))
@@ -102,6 +128,12 @@ int Lexer::gettok()
         {
             identifierAsString_.clear();
             return static_cast<int>(Token::assignment);
+        }
+
+        if (identifierAsString_ == delimitertIdentifier_)
+        {
+            identifierAsString_.clear();
+            return static_cast<int>(Token::delimiter);
         }
     }
 

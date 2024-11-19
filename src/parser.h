@@ -11,7 +11,9 @@ class Parser
     public:
         Parser(const std::filesystem::path &path);
         virtual ~Parser() = default;
-        std::vector<Lexer::Token> tokenize(const std::string & source);
+
+        // AST * parse();
+
         // /// GetTokPrecedence - Get the precedence of the pending binary operator token.
         // static int GetTokPrecedence() {
         // if (!isascii(currentToken_))
