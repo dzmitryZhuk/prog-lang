@@ -11,6 +11,7 @@
       "cwd": "${fileDirname}",
       "environment": [],
       "externalConsole": false,
+      "preLaunchTask": "build cmake",
       "linux": {
         "MIMode": "gdb",
         "miDebuggerPath": "/usr/bin/gdb"  // change path
@@ -24,11 +25,12 @@
       "type": "cppvsdbg",
       "request": "launch",
       "program": "${workspaceFolder}/build/bin/Debug/compiller.exe",
-      "args": [],
+      "args": ["C:/Trash/file.zhk"],
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
       "environment": [],
-      "console": "externalTerminal"
+      "console": "integratedTerminal",
+      "preLaunchTask": "build cmake"
     }
   ]
 }
