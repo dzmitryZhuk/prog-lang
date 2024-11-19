@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug",
+      "name": "Debug unix",
       "type": "cppdbg",
       "request": "launch",
       "program": "${workspaceFolder}/build/bin/zhk-lang",
@@ -17,12 +17,18 @@
       },
       "osx": {
         "MIMode": "lldb"
-      },
-      "windows": {
-        "MIMode": "gdb",  // use it if wanna use gcc or clang compiller for windows
-        "miDebuggerPath": "C:\\MinGw\\bin\\gdb.exe" // change path
       }
+    },
+    {
+      "name": "Debug win",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/bin/Debug/compiller.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [],
+      "console": "externalTerminal"
     }
-
   ]
 }
