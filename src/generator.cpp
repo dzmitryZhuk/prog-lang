@@ -1,9 +1,14 @@
 #include "generator.h"
+#include "utils.h"
 
 #include <sstream>
 #include <format>
 #include <string_view>
 
+using namespace utils;
+
+constexpr ARCH cArch = ARCH::arm64;  
+constexpr OS cOs = OS::mac;
 constexpr std::string_view cIndent = "\t\t\t";
 
 Generator::Generator()
