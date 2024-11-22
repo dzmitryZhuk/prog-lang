@@ -17,27 +17,27 @@ Generator::Generator()
 {
 }
 
-std::string Generator::generateHeader()
-{
-  std::stringstream asmString;
-#ifdef __APPLE__
-  // #ifdef TARGET_OS_MAC
-  asmString << std::format(".global {}", nameOfEntry_) << std::endl;
-  asmString << ".align 4" << std::endl;
-  // #endif
-#endif 
-  return asmString.str();
-}
-
 std::string Generator::generate()
 {
   std::stringstream asmString;
   asmString << generateHeader();
   asmString << std::format("{}:", nameOfEntry_) << std::endl;
-#ifdef __APPLE__
 
-#endif
   asmString << generateFooter();
+  return asmString.str();
+}
+
+std::string Generator::generateHeader()
+{
+  std::stringstream asmString;
+#ifdef __APPLE__
+  // #ifdef TARGET_OS_MAC
+  asmString << std::endl;
+  asmString << std::format(".global {}", nameOfEntry_) << std::endl;
+  asmString << ".align 4" << std::endl;
+  asmString << std::endl;
+  // #endif
+#endif 
   return asmString.str();
 }
 
@@ -46,6 +46,7 @@ std::string Generator::generateFooter()
   std::stringstream asmString;
 #ifdef __APPLE__
   // #ifdef TARGET_OS_MAC
+  asmString << std::endl;
   asmString << std::format("{}:", nameOfExit_) << std::endl;
   asmString << std::format("{}mov X0, #0", cIndent) << std::endl;   // Use 0 return code
   asmString << std::format("{}mov X16, #1", cIndent) << std::endl;  // #1 sys call - exit
