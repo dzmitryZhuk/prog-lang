@@ -72,8 +72,9 @@ std::string Generator::generateSysCallWrite(unsigned int fd, addr buf, addr coun
 {
   std::stringstream asmString;
   int syscall_number = 4; // arm (32-bit/EABI)
-#ifdef __APPLE__
-  // #ifdef TARGET_OS_MAC
+  switch (cOs)
+  {
+  case OS::mac:
   asmString << std::endl;
   asmString << std::format("{}mov X0, #{}", cIndent, fd) << std::endl;
   asmString << std::format("{}mov X1, {}", cIndent, buf) << std::endl;
@@ -81,8 +82,12 @@ std::string Generator::generateSysCallWrite(unsigned int fd, addr buf, addr coun
   asmString << std::format("{}mov X16, #{}", cIndent, syscall_number) << std::endl;
   asmString << std::format("{}svc	#0x80", cIndent) << std::endl;
   asmString << std::endl;
-  // #endif
-#endif 
+    break;
+  case OS::linux:
+  case OS::win:
+  default:
+    break;
+  }
   return asmString.str();
 }
 
@@ -90,8 +95,9 @@ std::string Generator::generateSysCallRead(unsigned int fd, addr buf, addr count
 {
   std::stringstream asmString;
   int syscall_number = 3; // arm (32-bit/EABI)
-#ifdef __APPLE__
-  // #ifdef TARGET_OS_MAC
+  switch (cOs)
+  {
+  case OS::mac:
   asmString << std::endl;
   asmString << std::format("{}mov X0, #{}", cIndent, fd) << std::endl;
   asmString << std::format("{}mov X1, {}", cIndent, buf) << std::endl;
@@ -99,8 +105,12 @@ std::string Generator::generateSysCallRead(unsigned int fd, addr buf, addr count
   asmString << std::format("{}mov X16, #{}", cIndent, syscall_number) << std::endl;
   asmString << std::format("{}svc	#0x80", cIndent) << std::endl;
   asmString << std::endl;
-  // #endif
-#endif 
+    break;
+  case OS::linux:
+  case OS::win:
+  default:
+    break;
+  }
   return asmString.str();
 }
 
