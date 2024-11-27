@@ -29,6 +29,11 @@ public:
     std::vector<TokenTuple> tokenize();
     explicit Lexer(const std::string &source);
     virtual ~Lexer() = default;
+    inline const std::string functionIdentifier() const { return functionIdentifier_; }
+    inline const std::string commentsIdentifier() const { return commentsIdentifier_; }
+    inline const std::string returningIdentifier() const { return returningIdentifier_; }
+    inline const std::string assignmentIdentifier() const { return assignmentIdentifier_; }
+    inline const std::string delimitertIdentifier() const { return delimitertIdentifier_; }
 
 private:
     const std::string identifier() const;
