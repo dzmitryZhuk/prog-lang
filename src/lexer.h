@@ -43,7 +43,9 @@ private:
     virtual int getchar();
 
     const std::string source_;
-    int index;
+    size_t index;
+    size_t cur_line;        // number of current line in stream
+    size_t cur_line_pos;    // number of current position in line
     std::string identifierAsString_;
     double numberValue_;
 

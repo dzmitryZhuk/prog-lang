@@ -12,6 +12,9 @@ Lexer::Lexer(const std::string &source)
     , assignmentIdentifier_("=")
     , delimitertIdentifier_(";")
 {
+    index = 0;
+    cur_line = cStartCountFrom;
+    cur_line_pos = cStartCountFrom;
 }
 
 std::vector<Lexer::TokenTuple> Lexer::tokenize()
@@ -58,6 +61,11 @@ int Lexer::gettok()
     while (isspace(lastChar))
     {
         lastChar = std::move(getchar());
+        if (lastChar == '\n')
+        {
+            cur_line++;
+            cur_line_pos = cStartCountFrom;
+        }
     }
 
     if (isalpha(lastChar))  // [a-zA-Z]
@@ -153,5 +161,6 @@ int Lexer::getchar()
     {
         return EOF;
     }
+    cur_line_pos++;
     return source_.at(index++);
 }
