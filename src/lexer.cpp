@@ -5,12 +5,11 @@
 
 Lexer::Lexer(const std::string &source)
     : source_(source)
-    , index(0)
-    , functionIdentifier_("func")
-    , commentsIdentifier_("#")
-    , returningIdentifier_("ret")
-    , assignmentIdentifier_("=")
-    , delimitertIdentifier_(";")
+    , functionIdentifier_(cIdentFunc)
+    , commentsIdentifier_(cIdentComment)
+    , returningIdentifier_(cIdentRet)
+    , assignmentIdentifier_(cIdentAssign)
+    , delimitertIdentifier_(cIdentDelim)
 {
     index = 0;
     cur_line = cStartCountFrom;
