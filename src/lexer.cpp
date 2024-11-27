@@ -40,6 +40,7 @@ std::vector<Lexer::TokenTuple> Lexer::tokenize()
         }
         res.push_back(curTuple);
     }
+    res.push_back(std::make_tuple(Token::eof, TokenPos(cur_line, cur_line_pos), std::monostate()));
 
     return res;
 }
