@@ -24,7 +24,8 @@ public:
     };
 
     using TokenValue = std::variant<std::monostate, std::string, double>;
-    using TokenTuple = std::pair<Token, TokenValue>;
+    using TokenPos = std::pair<size_t, size_t>;
+    using TokenTuple = std::tuple<Token, TokenPos, TokenValue>;
 
     std::vector<TokenTuple> tokenize();
     explicit Lexer(const std::string &source);

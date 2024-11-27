@@ -25,16 +25,17 @@ std::vector<Lexer::TokenTuple> Lexer::tokenize()
 
     while ((token = static_cast<Token>(gettok())) != Token::eof)
     {
+        TokenPos pos = {cur_line, cur_line_pos};
         switch (token)
         {
         case Token::identifier:
-            curTuple = {token, identifier()};
+            curTuple = {token, pos, identifier()};
             break;
         case Token::number:
-            curTuple = {token, number()};
+            curTuple = {token, pos, number()};
             break;
         default:
-            curTuple = {token, std::monostate()};
+            curTuple = {token, pos, std::monostate()};
             break;
         }
         res.push_back(curTuple);
