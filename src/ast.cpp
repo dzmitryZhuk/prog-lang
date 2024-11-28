@@ -73,6 +73,17 @@ const ASTExpression* ASTExpressionAssignment::value() const
     return value_.get();
 }
 
+ASTExpressionReturn::ASTExpressionReturn(std::unique_ptr<ASTExpression> value)
+    : value_(std::move(value))
+{
+    type_ = Lexer::Token::returning;
+}
+
+const ASTExpression* ASTExpressionReturn::value() const
+{
+    return value_.get();
+}
+
 ASTExpressionBinary::ASTExpressionBinary(const std::string& binaryOperator, 
                                          std::unique_ptr<ASTExpression> left, 
                                          std::unique_ptr<ASTExpression> right)

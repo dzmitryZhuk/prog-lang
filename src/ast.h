@@ -59,6 +59,15 @@ protected:
     std::unique_ptr<ASTExpression> value_;
 };
 
+class ASTExpressionReturn : public ASTExpression {
+public:
+    ASTExpressionReturn(std::unique_ptr<ASTExpression> value);
+    const ASTExpression* value() const;
+
+protected:
+    std::unique_ptr<ASTExpression> value_;
+};
+
 class ASTExpressionBinary : public ASTExpression {
 public:
     ASTExpressionBinary(const std::string& binaryOperator, 
