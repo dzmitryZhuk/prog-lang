@@ -1,29 +1,12 @@
 #include "ast.h"
 
 ASTNode::ASTNode()
-    : left_(nullptr)
-    , right_(nullptr)
 {
 }
 
-void ASTNode::setLeft(std::unique_ptr<ASTNode> left)
+void ASTNode::addChild(std::unique_ptr<ASTNode> child)
 {
-    left_ = std::move(left);
-}
-
-void ASTNode::setRight(std::unique_ptr<ASTNode> right)
-{
-    right_ = std::move(right);
-}
-
-ASTNode* ASTNode::left() const
-{
-    return left_.get();
-}
-
-ASTNode* ASTNode::right() const
-{
-    return right_.get();
+    children_.push_back(std::move(child));
 }
 
 std::optional<Lexer::Token> ASTNode::type() const
@@ -89,8 +72,6 @@ ASTExpressionBinary::ASTExpressionBinary(const std::string& binaryOperator,
                                          std::unique_ptr<ASTExpression> right)
     : operator_(binaryOperator)
 {
-    setLeft(std::move(left));
-    setRight(std::move(right));
     // type_ = Lexer::Token::binary_operator;
 }
 

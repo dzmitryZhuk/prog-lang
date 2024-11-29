@@ -12,16 +12,13 @@ public:
     ASTNode();
     virtual ~ASTNode() = default;
 
-    void setLeft(std::unique_ptr<ASTNode> left);
-    void setRight(std::unique_ptr<ASTNode> right);
-    ASTNode* left() const;
-    ASTNode* right() const;
+    void addChild(std::unique_ptr<ASTNode> child);
+    const std::vector<std::unique_ptr<ASTNode>>& children() const;
 
     std::optional<Lexer::Token> type() const;
 
 protected:
-    std::unique_ptr<ASTNode> left_;
-    std::unique_ptr<ASTNode> right_;
+    std::vector<std::unique_ptr<ASTNode>> children_;
     std::optional<Lexer::Token> type_;
 };
 
