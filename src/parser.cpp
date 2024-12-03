@@ -21,64 +21,65 @@ std::unique_ptr<ASTNode> Parser::parse()
 std::unique_ptr<ASTNode> Parser::parse(const std::vector<Lexer::TokenTuple>& tokens)
 {
   size_t currentIter = 0; // pointer for current token (iterator)
-  
-  auto currentToken = [&]() -> const Lexer::TokenTuple& {
-      if (currentIter >= tokens.size()) {
-          throw std::runtime_error("Unexpected end of input while parsing");
-      }
-      return tokens[currentIter];
-  };
-
-  auto checkToken = [&](Lexer::Token expectedType) -> bool {
-      return currentIter < tokens.size() && std::get<Lexer::Token>(currentToken()) == expectedType;
-  };
-
-  auto consumeToken = [&]() -> const Lexer::TokenTuple& {
-      const auto& token = currentToken();
-      ++currentIter;
-      return token;
-  };
-
-  // start parsing
   std::unique_ptr<ASTNode> root = nullptr;
+  // start parsing
 
   while (currentIter < tokens.size()) {
-      const auto& token = currentToken();
+    auto &[token, pos, value] = tokens[currentIter];
 
-      switch (std::get<Lexer::Token>(token)) {
-          case Lexer::Token::returning: {
-              // parse "ret <smth>;"
-              consumeToken(); // consume "ret"
+    switch (token) {
+    case Lexer::Token::returning: {
+        // parse "ret <smth>;"
 
-              // next token is number or variable
-              if (checkToken(Lexer::Token::number)) {
-                  double value = std::get<double>(std::get<Lexer::TokenValue>(consumeToken()));
-                  root = std::make_unique<ASTExpressionNumber>(value);
-              } else if (checkToken(Lexer::Token::identifier)) {
-                  std::string variableName = std::get<std::string>(std::get<Lexer::TokenValue>(consumeToken()));
-                  root = std::make_unique<ASTExpressionVariable>(variableName);
-              } else {  // TODO: add case if function call here
-                auto pos = std::get<Lexer::TokenPos>(consumeToken());
-                std::cout << std::format("line {}:{}:Expected a number or variable after 'ret'", pos.first, pos.second);
-                  // throw std::runtime_error("Expected a number or variable after 'ret'");
-              }
+        // skip "ret", it will be added at the end of expression
+        currentIter++;
+        if (currentIter >= tokens.size()) {
+            auto error_message = std::format("line {}:{}:Expected some value after 'ret'", pos.first, pos.second); 
+            std::cout << error_message;
+            // throw std::runtime_error(error_message);
+            break;
+        }
+        auto &[token1, pos1, value1] = tokens[currentIter];
+        std::unique_ptr<ASTExpression> returnValue;
 
-              // make sure that construction ends with ";"
-              if (!checkToken(Lexer::Token::delimiter)) {
-                auto pos = std::get<Lexer::TokenPos>(consumeToken());
-                std::cout << std::format("line {}:{}:Expected '{}' after return statement", pos.first, pos.second, lexer_.get()->delimitertIdentifier());
-                  // throw std::runtime_error(std::format("Expected '{}' after return statement", lexer_.get()->delimitertIdentifier()));
-              }
-              consumeToken(); // consume ";"
-              break;
-          }
-          
-          default: {
-              // throw std::runtime_error("Unexpected token while parsing");
-              auto pos = std::get<Lexer::TokenPos>(consumeToken());
-              std::cout << std::format("line {}:{}:Unexpected token while parsing", pos.first, pos.second);
-          }
-      }
+        // next token is number or variable
+        if (token1 == Lexer::Token::number) {
+            double number = std::get<double>(value1);
+            returnValue = std::make_unique<ASTExpressionNumber>(number);
+        } else {  // TODO: add case if some identifier or function call here
+            auto error_message = std::format("line {}:{}:Expected a number after 'ret'", pos1.first, pos1.second);
+            std::cout << error_message;
+            // throw std::runtime_error(auto error_message);
+        }
+
+        auto returnNode = std::make_unique<ASTExpressionReturn>(std::move(returnValue));
+        root->addChild(std::move(returnNode));
+
+        // make sure that construction ends with ";"
+        currentIter++;
+        if (currentIter >= tokens.size()) {
+            auto error_message = std::format("line {}:{}:Expected '{}' after return statement", pos.first, pos.second, lexer_.get()->delimitertIdentifier());
+            std::cout << error_message;
+            // throw std::runtime_error(error_message);
+            break;
+        }
+        auto &[token2, pos2, value2] = tokens[currentIter];
+
+        if (token2 != Lexer::Token::delimiter) {
+            auto error_message = std::format("line {}:{}:Expected '{}' after return statement", pos2.first, pos2.second, lexer_.get()->delimitertIdentifier());
+            std::cout << error_message;
+            // throw std::runtime_error(auto error_message);
+        }
+        currentIter++; // consume ";"
+    }
+    
+    default: {
+        currentIter++;
+        auto error_message = std::format("line {}:{}:Unexpected token while parsing", pos.first, pos.second);
+        std::cout << error_message;
+        // throw std::runtime_error(auto error_message);
+    }
+    }
   }
 
   return root;
