@@ -20,6 +20,7 @@ class Generator
         virtual std::string generateHeader();
         virtual std::string generateFooter();
 
+        virtual std::string generateSysCallExit(int exitCode);
         virtual std::string generateSysCallWrite(unsigned int fd, addr buf, addr count);
         virtual std::string generateSysCallRead(unsigned int fd, addr buf, addr count);
         virtual std::string generateSysCallReadStdin(addr buf, addr count);

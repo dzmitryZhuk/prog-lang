@@ -13,7 +13,7 @@ constexpr std::string_view cIndent = "\t\t\t";
 
 Generator::Generator()
   : nameOfEntry_("_start")
-  , nameOfExit_("_exit")
+  , nameOfExit_("_instant_success_exit")
 {
 }
 
@@ -49,15 +49,23 @@ std::string Generator::generateHeader()
 std::string Generator::generateFooter()
 {
   std::stringstream asmString;
+  asmString << std::endl;
+  asmString << std::format("{}:", nameOfExit_) << std::endl;
+  asmString << generateSysCallExit(0);
+  asmString << std::endl;
+  return asmString.str();
+}
+
+std::string Generator::generateSysCallExit(int exitCode)
+{
+  std::stringstream asmString;
+  int syscall_number = 1; // arm (32-bit/EABI)
   switch (cOs)
   {
   case OS::mac:
-  asmString << std::endl;
-  asmString << std::format("{}:", nameOfExit_) << std::endl;
-  asmString << std::format("{}mov X0, #0", cIndent) << std::endl;   // Use 0 return code
-  asmString << std::format("{}mov X16, #1", cIndent) << std::endl;  // #1 sys call - exit
-    asmString << std::format("{}svc	#0x80", cIndent) << std::endl;    // Call kernel
-    asmString << std::endl;
+    asmString << std::format("{}mov X0, #{}", cIndent, exitCode) << std::endl;
+    asmString << std::format("{}mov X16, #{}", cIndent, syscall_number) << std::endl;
+    asmString << std::format("{}svc	#0x80", cIndent) << std::endl;
     break;
   case OS::linux:
   case OS::win:
@@ -66,7 +74,6 @@ std::string Generator::generateFooter()
   }
   return asmString.str();
 }
-
 
 std::string Generator::generateSysCallWrite(unsigned int fd, addr buf, addr count)
 {
