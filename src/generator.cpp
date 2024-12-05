@@ -11,9 +11,10 @@ constexpr ARCH cArch = ARCH::arm64;
 constexpr OS cOs = OS::mac;
 constexpr std::string_view cIndent = "\t\t\t";
 
-Generator::Generator()
+Generator::Generator(std::unique_ptr<ASTNode> ast)
   : nameOfEntry_("_start")
   , nameOfExit_("_instant_success_exit")
+  , ast_(std::move(ast))
 {
 }
 
@@ -22,6 +23,40 @@ std::string Generator::generate()
   std::stringstream asmString;
   asmString << generateHeader();
   asmString << std::format("{}:", nameOfEntry_) << std::endl;
+
+  // generate main code
+  for (const auto &node : ast_->children()) {
+    auto node_type_opt = node.get()->type();
+    if (node_type_opt.has_value()) {
+      switch (node_type_opt.value())
+      {
+      case Lexer::Token::returning:
+      {
+        const auto &child = node.get()->children().at(0);
+        node_type_opt = child.get()->type();
+        if (node_type_opt.has_value())
+        {
+          switch (node_type_opt.value())
+          {
+          case Lexer::Token::number:
+          {
+            auto node = dynamic_cast<ASTExpressionNumber*>(child.get());
+            const auto number = node->value();
+            const auto numer_as_int = static_cast<const int>(number);
+            generateSysCallExit(numer_as_int);
+            break;
+          }
+          default:
+            break;
+          }
+        }
+        break;
+      }
+      default:
+        break;
+      }
+    }
+  }
 
   asmString << generateFooter();
   return asmString.str();

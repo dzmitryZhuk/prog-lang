@@ -12,7 +12,7 @@ using addr = uint32_t;
 class Generator
 {
     public:
-        explicit Generator(/*AST tree*/);
+        explicit Generator(std::unique_ptr<ASTNode> ast);
         virtual ~Generator() = default;
         std::string generate();
 
@@ -35,4 +35,8 @@ class Generator
         * \brief Name of label that respond for exit from program
         */
         std::string nameOfExit_;
+        /*!
+        * \brief AST according to which the assembler code will be generated
+        */
+        std::unique_ptr<ASTNode> ast_;
 };
