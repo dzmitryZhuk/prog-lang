@@ -41,7 +41,7 @@ std::string Generator::generate()
             auto node = dynamic_cast<const ASTExpressionNumber*>(return_value);
             const auto number = node->value();
             const auto numer_as_int = static_cast<const int>(number);
-            generateSysCallExit(numer_as_int);
+            asmString << generateSysCallExit(numer_as_int);
             break;
           }
           default:
