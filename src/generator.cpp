@@ -66,10 +66,10 @@ std::string Generator::generateHeader()
   switch (cOs)
   {
   case OS::mac:
-  asmString << std::endl;
-  asmString << std::format(".global {}", nameOfEntry_) << std::endl;
-  asmString << ".align 4" << std::endl;
-  asmString << std::endl;
+    asmString << std::endl;
+    asmString << std::format(".global {}", nameOfEntry_) << std::endl;
+    asmString << ".align 4" << std::endl;
+    asmString << std::endl;
     break;
   case OS::linux:
   case OS::win:
@@ -115,11 +115,11 @@ std::string Generator::generateSysCallWrite(unsigned int fd, addr buf, addr coun
   switch (cOs)
   {
   case OS::mac:
-  asmString << std::format("{}mov X0, #{}", cIndent, fd) << std::endl;
-  asmString << std::format("{}mov X1, {}", cIndent, buf) << std::endl;
-  asmString << std::format("{}mov X2, {}", cIndent, count) << std::endl;
-  asmString << std::format("{}mov X16, #{}", cIndent, syscall_number) << std::endl;
-  asmString << std::format("{}svc	#0x80", cIndent) << std::endl;
+    asmString << std::format("{}mov X0, #{}", cIndent, fd) << std::endl;
+    asmString << std::format("{}mov X1, {}", cIndent, buf) << std::endl;
+    asmString << std::format("{}mov X2, {}", cIndent, count) << std::endl;
+    asmString << std::format("{}mov X16, #{}", cIndent, syscall_number) << std::endl;
+    asmString << std::format("{}svc	#0x80", cIndent) << std::endl;
     break;
   case OS::linux:
   case OS::win:
@@ -136,11 +136,11 @@ std::string Generator::generateSysCallRead(unsigned int fd, addr buf, addr count
   switch (cOs)
   {
   case OS::mac:
-  asmString << std::format("{}mov X0, #{}", cIndent, fd) << std::endl;
-  asmString << std::format("{}mov X1, {}", cIndent, buf) << std::endl;
-  asmString << std::format("{}mov X2, {}", cIndent, count) << std::endl;
-  asmString << std::format("{}mov X16, #{}", cIndent, syscall_number) << std::endl;
-  asmString << std::format("{}svc	#0x80", cIndent) << std::endl;
+    asmString << std::format("{}mov X0, #{}", cIndent, fd) << std::endl;
+    asmString << std::format("{}mov X1, {}", cIndent, buf) << std::endl;
+    asmString << std::format("{}mov X2, {}", cIndent, count) << std::endl;
+    asmString << std::format("{}mov X16, #{}", cIndent, syscall_number) << std::endl;
+    asmString << std::format("{}svc	#0x80", cIndent) << std::endl;
     break;
   case OS::linux:
   case OS::win:
