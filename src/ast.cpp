@@ -9,6 +9,11 @@ void ASTNode::addChild(std::unique_ptr<ASTNode> child)
     children_.push_back(std::move(child));
 }
 
+const std::vector<std::unique_ptr<ASTNode>> &ASTNode::children() const
+{
+    return children_;
+}
+
 std::optional<Lexer::Token> ASTNode::type() const
 {
     return type_;
