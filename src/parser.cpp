@@ -71,6 +71,7 @@ std::unique_ptr<ASTNode> Parser::parse(const std::vector<Lexer::TokenTuple>& tok
             // throw std::runtime_error(auto error_message);
         }
         currentIter++; // consume ";"
+        break;
     }
     
     default: {
