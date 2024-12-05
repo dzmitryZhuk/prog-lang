@@ -21,7 +21,7 @@ std::unique_ptr<ASTNode> Parser::parse()
 std::unique_ptr<ASTNode> Parser::parse(const std::vector<Lexer::TokenTuple>& tokens)
 {
   size_t currentIter = 0; // pointer for current token (iterator)
-  std::unique_ptr<ASTNode> root = nullptr;
+  std::unique_ptr<ASTNode> root = std::make_unique<ASTNode>();
   // start parsing
 
   while (currentIter < tokens.size()) {
