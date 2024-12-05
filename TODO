@@ -2,3 +2,5 @@
 
 - realize open/close syscalls
 - realize read/write syscalls
+- realize reading from stdin
+- realize writing to stdout
