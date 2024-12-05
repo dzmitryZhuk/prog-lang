@@ -26,21 +26,19 @@ std::string Generator::generate()
 
   // generate main code
   for (const auto &node : ast_->children()) {
-    auto node_type_opt = node.get()->type();
-    if (node_type_opt.has_value()) {
-      switch (node_type_opt.value())
+    if (node.get()->type().has_value()) {
+      switch (node.get()->type().value())
       {
       case Lexer::Token::returning:
       {
-        const auto &child = node.get()->children().at(0);
-        node_type_opt = child.get()->type();
-        if (node_type_opt.has_value())
+        const auto &return_value = dynamic_cast<ASTExpressionReturn*>(node.get())->value();
+        if (return_value->type().has_value())
         {
-          switch (node_type_opt.value())
+          switch (return_value->type().value())
           {
           case Lexer::Token::number:
           {
-            auto node = dynamic_cast<ASTExpressionNumber*>(child.get());
+            auto node = dynamic_cast<const ASTExpressionNumber*>(return_value);
             const auto number = node->value();
             const auto numer_as_int = static_cast<const int>(number);
             generateSysCallExit(numer_as_int);
