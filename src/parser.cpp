@@ -73,6 +73,11 @@ std::unique_ptr<ASTNode> Parser::parse(const std::vector<Lexer::TokenTuple>& tok
         currentIter++; // consume ";"
         break;
     }
+
+    case Lexer::Token::eof: {
+      currentIter++;
+      break;
+    }
     
     default: {
         currentIter++;
