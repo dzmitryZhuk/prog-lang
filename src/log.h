@@ -63,7 +63,7 @@ public:
 
     void log(LogLevel level, const std::string& function, int line, const std::string& message) {
         std::stringstream ss;
-        ss << getTimestamp() << " [" << logLevelToString(level) << "] (" << function << ":" << line << "): " 
+        ss << utils::getTimestamp() << " [" << logLevelToString(level) << "] (" << function << ":" << line << "): " 
            << message;
         logQueue_.push(ss.str());
     }
@@ -97,9 +97,9 @@ private:
         std::string logMessage;
         while (logQueue_.pop(logMessage)) {
             std::lock_guard<std::mutex> lock(streamMutex_);
-#ifdef DEBUG
+// #ifdef DEBUG
             std::cout << logMessage << std::endl;
-#endif
+// #endif
             if (fileStream_.is_open()) {
                 fileStream_ << logMessage << std::endl;
             }

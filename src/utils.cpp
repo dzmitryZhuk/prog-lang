@@ -3,7 +3,7 @@
 
 #include "utils.h"
 
-std::string getTimestamp() {
+std::string utils::getTimestamp() {
     const auto now = std::chrono::system_clock::now();
     const auto nowAsTimeT = std::chrono::system_clock::to_time_t(now);
     const auto nowMs = std::chrono::duration_cast<std::chrono::milliseconds>(
